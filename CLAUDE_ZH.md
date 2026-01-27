@@ -19,50 +19,44 @@
 
 | 优先级 | 工具 (MCP) | 用途 | 场景 |
 | :--- | :--- | :--- | :--- |
-| **P0 (必选)** | **Cognee** | 长期记忆/经验检索 | 任务开始(Search)、任务结束(Save) |
-| **P1 (首选)** | **Exa Code** | 获取高质量代码 | 寻找最佳实践、代码片段 |
-| **P1 (首选)** | **Exa Web** | 技术方案搜索 | 寻找架构方案、技术选型 |
+| **P0 (必选)** | **memory** | 知识图谱/长期记忆 | 任务启动(Read)、任务闭环(Write) |
+| **P1 (首选)** | **Exa Code** | 源码检索 | 寻找最佳实践、代码片段 |
+| **P1 (首选)** | **Exa Web** | 方案检索 | 架构选型、技术调研 |
 | **P2 (次选)** | **Context7** | 官方文档查询 | 确认 API 细节、库版本 |
-| **P3 (保底)** | **Web Search** | 通用网络搜索 | 补充非常规问题信息 |
+| **P3 (保底)** | **Web Search** | 通用搜索 | 补充非常规信息 |
 
 ## 4. 增强型开发工作流 (Strict Flow)
 
 ### Phase 1: 启动与检索 (Initialization)
-1.  **经验唤醒 (Cognee)**：
-    -   **必须执行**：`mcp__cognee__search(query="任务关键词", search_type="GRAPH_COMPLETION")`
-    -   *目的*：避免重蹈覆辙，复用历史架构决策。
+1.  **记忆唤醒 (Memory Recall)**：
+    -   **必须执行**：`mcp__memory__read_graph` 或 `mcp__memory__search` (根据实际工具名)
+    -   *目的*：读取项目历史偏好、架构决策与避坑指南。
 2.  **外部调研 (Research)**：
     -   需要代码：`mcp__exa__get_code_context_exa` (优先)
     -   需要方案：`mcp__exa__web_search_exa`
     -   需要文档：`mcp__context7__query-docs`
-    -   *禁止*：在未检索前凭空猜测或直接写代码。
+    -   *禁止*：在未检索前凭空猜测。
 
 ### Phase 2: 设计与实现 (Execution)
-1.  **方案设计**：基于检索到的 Context 制定方案。
+1.  **方案设计**：基于 Memory + Context 制定方案。
 2.  **代码实现**：
-    -   参考 Exa 获取的优秀代码，但必须**适配项目**（拒绝盲目复制）。
-    -   遵守“工程哲学”进行去冗余重构。
+    -   参考 Exa 结果，但必须执行**去冗余重构**。
+    -   严禁盲目复制，需适配当前项目架构。
 3.  **验证修正**：
-    -   运行 `ide - getDiagnostics` 或 `cclsp - get_diagnostics`。
-    -   修复所有 Error 后再提交给 [VW]。
+    -   IDE 环境：`ide - getDiagnostics`
+    -   非 IDE 环境：`cclsp - get_diagnostics`
+    -   **自修正**：必须修复 Error 后再交付。
 
 ### Phase 3: 沉淀与闭环 (Consolidation)
-**任务完成后，必须执行** `mcp__cognee__save_interaction` 保存经验。
+**任务完成后，必须执行** `mcp__memory__create_entities` (或类似写入工具) 保存经验。
 
 - **触发条件**：Bug 修复 / 功能完成 / 架构决策 / 发现深坑。
-- **数据结构 (JSON)**：
-  ```json
-  {
-    "type": "BugFix/Feature/Refactor",
-    "problem": "简述问题",
-    "solution": "详细步骤与关键代码",
-    "decision_rationale": "选择该方案的第一性原理",
-    "pattern": "可复用的代码模式",
-    "pitfalls": "避坑指南"
-  }
-  
-## 5. 知识管理自检
+- **存储实体 (Entities)**：
+  - *Name*: 任务/问题名称
+  - *Type*: BugFix / Feature / Pattern
+  - *Observation*: 解决方案、决策依据 (第一性原理)、避坑点。
 
-- Before Output: 是否已检索 Cognee 历史经验？
-- After Output: 是否已将新知识存入 Cognee？
-- Doc Update: 严格区分是“更新旧文档”还是“创建新文档”，保持知识库整洁。
+## 5. 知识管理自检
+- **Before Output**: 是否已调用 `memory` 检索历史？
+- **After Output**: 是否已调用 `memory` 存储新知？
+- **Doc Update**: 严格区分“更新旧文档”与“创建新文档”，保持知识库**熵减**。
