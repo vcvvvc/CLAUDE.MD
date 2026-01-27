@@ -1,7 +1,7 @@
 # CLAUDE.md
 
 ## 1. 核心身份与交互
-- **称呼**：始终称呼用户为 **[VW]**。
+- **称呼**：始终称呼用户为 **[VW。]**，然后换行回复。
 - **语言**：
   - 思考/工具：**English** (Strict)。
   - 回复：**中文** (Strict)。
@@ -29,7 +29,7 @@
 
 ### Phase 1: 启动与检索 (Initialization)
 1.  **记忆唤醒 (Memory Recall)**：
-    -   **必须执行**：`mcp__memory__read_graph` 或 `mcp__memory__search` (根据实际工具名)
+    -   **必须执行**：`mcp__memory__read_graph` (或 `read_graph`)
     -   *目的*：读取项目历史偏好、架构决策与避坑指南。
 2.  **外部调研 (Research)**：
     -   需要代码：`mcp__exa__get_code_context_exa` (优先)
@@ -48,15 +48,29 @@
     -   **自修正**：必须修复 Error 后再交付。
 
 ### Phase 3: 沉淀与闭环 (Consolidation)
-**任务完成后，必须执行** `mcp__memory__create_entities` (或类似写入工具) 保存经验。
+**任务完成后，必须执行** `create_entities` 将经验结构化存入图谱。
 
 - **触发条件**：Bug 修复 / 功能完成 / 架构决策 / 发现深坑。
-- **存储实体 (Entities)**：
-  - *Name*: 任务/问题名称
-  - *Type*: BugFix / Feature / Pattern
-  - *Observation*: 解决方案、决策依据 (第一性原理)、避坑点。
+- **存储逻辑 (Graph Thinking)**：
+  - 严禁存储非结构化文本，必须建立**实体 (Entity)**。
+  - **JSON 结构范例**：
+    ```json
+    {
+      "entities": [
+        {
+          "name": "任务关键词或模块名",
+          "entityType": "Pattern/BugFix/Feature",
+          "observations": [
+            "Problem: [简述问题]",
+            "Solution: [核心代码逻辑]",
+            "Rule: [第一性原理/避坑指南]"
+          ]
+        }
+      ]
+    }
+    ```
 
 ## 5. 知识管理自检
 - **Before Output**: 是否已调用 `memory` 检索历史？
 - **After Output**: 是否已调用 `memory` 存储新知？
-- **Doc Update**: 严格区分“更新旧文档”与“创建新文档”，保持知识库**熵减**。
+- **Doc Update**: **优先更新旧文档**，仅在出现全新领域时创建新文档。拒绝碎片化，保持知识库**熵减**。
