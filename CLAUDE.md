@@ -19,48 +19,55 @@
 
 | Priority | Tool (MCP) | Purpose | Scenario |
 | :--- | :--- | :--- | :--- |
-| **P0 (Required)** | **memory** | Knowledge Graph/Long-term Memory | Task Start (Read), Task End (Write) |
-| **P1 (Primary)** | **Exa Code** | Source Code Retrieval | Best practices, code snippets |
+| **P0 (Required)** | **memory** | Knowledge Graph | Task Start (Read), Task End (Write) |
+| **P1 (Primary)** | **Exa Code** | Source Code Retrieval | Best practices, CLI tools, Algorithms |
 | **P1 (Primary)** | **Exa Web** | Solution Retrieval | Architecture, tech stack research |
-| **P2 (Secondary)** | **Context7** | Official Documentation | API details, version confirmation |
+| **P2 (On-Demand)** | **UI-UX Pro Max** | Interface Design | **Frontend Pages Only** (Strictly forbidden for CLI) |
+| **P2 (Secondary)** | **Context7** | Official Docs | API details, version confirmation |
 | **P3 (Fallback)** | **Web Search** | General Search | Supplemental info for niche issues |
 
 ## 4. Enhanced Development Workflow (Strict Flow)
 
 ### Phase 1: Initialization & Retrieval
-1.  **Memory Recall**:
-    -   **Mandatory Execution**: `mcp__memory__read_graph` (or `read_graph`).
-    -   *Goal*: Retrieve project history, preferences, architectural decisions, and pitfalls.
-2.  **External Research**:
-    -   Code: `mcp__exa__get_code_context_exa` (Priority).
-    -   Solution: `mcp__exa__web_search_exa`.
-    -   Docs: `mcp__context7__query-docs`.
-    -   *Constraint*: No guessing. Research before coding.
+1.  **Memory Recall**: Execute `read_graph`. Retrieve project preferences and pitfalls.
+2.  **Path-Based Research**:
+    -   **Path A: CLI/Backend (Default)**:
+        -   Call `exa_code` for efficient implementations or `exa_web` for architecture.
+        -   *Focus*: Performance, STDIN/OUT handling, Argument parsing.
+    -   **Path B: Frontend (Pages Only)**:
+        -   Call `ui-ux-pro-max` for component/interaction suggestions.
+    -   **Common**: Call `context7` to confirm API versions.
+    -   **Prohibition**: No coding without research.
 
 ### Phase 2: Design & Execution
 1.  **Design**: Formulate a plan based on Memory + Context.
 2.  **Implementation**:
-    -   Reference Exa results but **must refactor for redundancy**.
-    -   **Adapt to project** (No blind copying).
+    -   Use retrieved results as raw material.
+    -   **Mandatory Refactoring**: Remove redundancy from raw material; adapt to project architecture.
 3.  **Verification**:
-    -   IDE Environment: `ide - getDiagnostics`.
-    -   Non-IDE: `cclsp - get_diagnostics`.
-    -   **Self-Correction**: Fix all errors before presenting to [VW].
+    -   Run `getDiagnostics` (IDE/LSP).
+    -   **Zero-Error Delivery**: Must fix all errors internally before outputting.
 
 ### Phase 3: Consolidation & Loop Closure
-**Upon task completion, MUST execute** `create_entities` to save insights into the graph.
+**Upon task completion, MUST execute** `create_entities`.
 
-- **Triggers**: Bug Fix / Feature Complete / Architecture Decision / Pitfalls.
-- **Storage Logic (Graph Thinking)**:
-  - Strictly forbid unstructured text; must build **Entities**.
-  - **JSON Structure Example**:
-    ```json
-    {
-      "entities": [
-        {
-          "name": "TaskKeyword or ModuleName",
-          "entityType": "Pattern/BugFix/Feature",
-          "observations": [
-            "Problem: [Brief description]",
-            "Solution: [Core code logic]",
-            "Rule:
+- **Triggers**: Bug Fix / Feature / Refactor / Pitfall.
+- **Graph Storage (JSON)**:
+  ```json
+  {
+    "entities": [{
+      "name": "TaskKey/Module",
+      "entityType": "Pattern/Bug/Feature",
+      "observations": ["Problem:...", "Solution:...", "Rule: (First Principles)"]
+    }]
+  }
+  ```
+
+## 5. Gatekeeper (Pre-Response Check)
+**STOP & CHECK** before generating the final response:
+
+[ ] **Memory Check**: Did I query history?
+
+[ ] **Entropy Check**: Did I prioritize updating existing docs? (Reject fragmentation)
+
+[ ] **Graph Check**: Did I write new insights into Memory?
