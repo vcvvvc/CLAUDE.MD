@@ -67,7 +67,21 @@
 3.  **Audit (留存验收)**: 任务完成后，**保留** `_PLAN.md` 供用户审查，禁止自动删除。
 **禁止**: 严禁创建分散的 findings/progress 等多余文件。
 
-## 6. 沉淀与闭环 (Consolidation)
+## 6. 验证闭环 (Verification Loop)
+
+**触发 (Trigger)**：每次完成代码编辑 (Post-Edit) 后，**必须**立即执行静态检查。
+
+**环境感知决策 (Context-Aware Action)**：
+* **IF (In IDE Environment)**:
+    * **Action**: 调用 `ide - getDiagnostics`。
+* **ELSE (Non-IDE / CLI Environment)**:
+    * **Action**: 调用 `cclsp - get_diagnostics`。
+
+**约束 (Constraint)**：
+* **Zero-Error Policy**: 若检测到 Error，必须在当前回复中尝试修复，**严禁**带着已知的编译错误/Linter 报错交付代码。
+* **Atomic**: 编辑与验证视为原子操作，不可分割。
+
+## 7. 沉淀与闭环 (Consolidation)
 
 **触发 (Trigger)**：任务结束 (Task Completion) / 发现并解决深坑 (Pitfall Solved)。
 
@@ -90,10 +104,11 @@
 ```
 * **约束**: `Rule` 字段必须抽象为通用原则，而非特定代码细节（例如：“使用智能指针管理生命周期” vs “把 int* 改为 unique_ptr”）。
 
-## 7. 交付门禁 (Gatekeeper)
+## 8. 交付门禁 (Gatekeeper)
 在此检查通过前，**禁止输出最终回复**。不需要输出选项，在思考中处理：
 
-[ ] **Memory Check**：是否开局读取了 Memory？
-[ ] **Search Check**：是否遵守了 Grep (ripgrep) 优先契约？
-[ ] **Plan Check**：复杂任务是否创建了 `_PLAN.md`？
-[ ] **Graph Check**：是否已将新知写入 Memory？
+- [ ] **Memory Check**：是否开局读取了 Memory？
+- [ ] **Search Check**：是否遵守了 Grep (ripgrep) 优先契约？
+- [ ] **Plan Check**：复杂任务是否创建了 `_PLAN.md`？
+- [ ] **Verify Check**：是否执行了 Diagnostics 检查 (IDE/cclsp)？
+- [ ] **Graph Check**：是否已将新知写入 Memory？
