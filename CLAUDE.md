@@ -13,10 +13,11 @@
   - **Delivery View**: Initial generation is a prototype; final delivery must be Refactored.
   - **Anti-Entropy (YAGNI)**: Zero redundancy. Writing code "for potential future use" is strictly prohibited.
   - **Maintainability**: Intuitive logic > Showing off tricks.
+  - **Delivery Cadence**: Each delivery should include only a few lines or one small function (single change ≤ 1 function / ≤ 30 lines); generating a large file in one go is prohibited.
   - **Defensive Strategy**:
     - **Public API**: Assume malicious input; must validate (Check & Error Handle).
     - **Internal**: Assume trusted state; must assert (Assert only).
-- **Documentation View**: Code is documentation. Comments must not explain "What", but must explain "Why".
+- **Documentation View**: Code is documentation. In each delivery, every newly added function/module must include at least one Why comment; comments must not explain "What", but must explain "Why".
 
 ## 3. Toolchain System
 
