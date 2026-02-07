@@ -8,6 +8,7 @@
 - https://github.com/upstash/context7
 - https://github.com/exa-labs/exa-mcp-server
 - https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
+- https://github.com/ktnyt/cclsp
 - memory
 
 ```
