@@ -17,7 +17,7 @@
   - **Defensive Strategy**:
     - **Public API**: Assume malicious input; must validate (Check & Error Handle).
     - **Internal**: Assume trusted state; must assert (Assert only).
-- **Documentation View**: Code is documentation. In each delivery, every newly added function/module must include at least one Why comment; comments must not explain "What", but must explain "Why".
+- **Documentation philosophy**: Code is the documentation. For every delivery, **each newly added function/module** must include **at least one “Why” comment** (the comment must be **bilingual: Chinese + English**). Comments are **strictly prohibited** from explaining **“What”**; they **must** explain **“Why.”**
 
 ## 3. Toolchain System
 
