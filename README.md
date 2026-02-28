@@ -27,6 +27,7 @@ npx cclsp@latest setup
 claude mcp add --scope user memory -e MEMORY_FILE_PATH=./claude/knowledge.json -- npx -y @modelcontextprotocol/server-memory 
 ```
 
+- https://github.com/BurntSushi/ripgrep
 
 ---
 
