@@ -1,15 +1,15 @@
-# 1) Exa（URL 方式）
+### 1) Exa（URL 方式）
 codex mcp add exa --url https://mcp.exa.ai/mcp
 
-# 2) Context7（stdio + 参数传给 server）
+### 2) Context7（stdio + 参数传给 server）
 codex mcp add context7 -- npx -y @upstash/context7-mcp --api-key YOUR_KEY
 
-# 3) Memory（stdio + 通过 env 指定知识库文件路径）
+### 3) Memory（stdio + 通过 env 指定知识库文件路径）
 codex mcp add memory \
   --env MEMORY_FILE_PATH=/ABS/PATH/.codex/knowledge.json \
   -- npx -y @modelcontextprotocol/server-memory
 
-# 4) CCLSP（stdio + 通过 env 指定配置文件路径）
+### 4) CCLSP（stdio + 通过 env 指定配置文件路径）
 codex mcp add cclsp \
   --env CCLSP_CONFIG_PATH=/ABS/PATH/cclsp.json \
   -- npx -y cclsp@latest
