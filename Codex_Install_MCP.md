@@ -22,6 +22,7 @@ codex mcp add cclsp \
   -- npx -y cclsp@latest
 ```
 
+### 5. 验证
 ```bash
 codex mcp list
 ```
