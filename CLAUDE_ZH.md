@@ -13,76 +13,52 @@
   - **交付观**：初次生成仅为原型，最终交付必须重构（Refactor）。
   - **反熵增 (YAGNI)**：零冗余。严禁编写“未来可能用到”的代码。
   - **可维护**：逻辑直观 > 技巧炫耀。
-  - **交付节奏**：每次只交付几行或一个小函数（单次变更 ≤ 1 个函数 / ≤ 30 行）；禁止一次性生成大文件。
+  - **交付节奏 (Delivery Cadence)**：
+    - **原子逻辑变更 (Atomic Logic Change)**：每次交付必须是一个**逻辑完备的最小单元**（如 1 个核心函数 / 1 个数据结构）。禁止强行拆分，也禁止一次性生成大文件。
+    - **跨文件禁令 (Cross-file Ban)**：严禁在一次回复中修改超过 **1** 个文件。涉及多文件的任务必须切分为多次对话。
+    - **禁止预测 (No Lookahead)**：严禁在当前步骤中连带编写或输出下一步骤的代码。
   - **防御策略 (Defensive)**：
     - **Public API**：假定输入恶意，必须校验 (Check & Error Handle)。
     - **Internal**：假定状态可信，必须断言 (Assert only)。
 - **文档观**：代码即文档。每次交付每个新增函数/模块至少一条 Why 注释(注释中英双版)，注释严禁解释“What”，必须解释“Why”。
 
-## 3. 工具链体系 (Toolchain)
+## 3. 信息获取流 (Information Pipeline)
 
-| 优先级 | 工具 | 核心用途 | 触发场景 (Trigger) |
-| :--- | :--- | :--- | :--- |
-| **P0 (必选)** | **Memory** | 知识图谱 | **Session Start**: 读取项目背景。<br>**Session End**: 记录关键决策/架构变更。 |
-| **P0 (必选)** | **Grep Tool (ripgrep)** | **本地透视** | **Code**: 查找定义、引用、用法。工程内的“Google”。<br>*(支持 Regex, 默认忽略 .git)* |
-| **P1 (外部)** | **Exa (Code/Web)** | 外部智库 | **Solve**: 报错修复、最佳实践、寻找第三方库 Demo。 |
-| **P2 (按需)** | **UI-UX Pro Max** | 界面设计 | **仅限前端页面开发** (写 CLI 时严禁调用) |
-| **P2 (次选)** | **Context7** | 官方文档 | **Verify**: 确认 API 细节、库版本兼容性、参数签名。 |
-| **P3 (保底)** | **Web Search** | 通用搜索 | 补充非常规信息 (如：寻找某个 issue 的讨论)。 |
+**系统禁令**：严禁在 Bash 中使用原始的 `grep`, `find`, `cat` 进行代码搜索。必须调用 MCP 工具获取结构化数据。
 
-## 4. 搜索契约 (Search Protocol)
+执行任何信息获取前，必须严格匹配以下场景路由：
 
-**决策树：我该如何获取信息？ (Decision Tree)**
-在进行任何代码搜索前，必须根据场景选择正确的工具。
+| 场景决策 (Scenario) | 动作选用 (Action) | 约束与目的 (Constraint & Why) |
+| :--- | :--- | :--- |
+| **0. 开局/复盘** | 调用 **Memory** | Session Start 读背景；Session End 写核心决策。 |
+| **1. 已知标识符/函数名** | 调用 **Grep (ripgrep)** | 必须使用 `-C` 参数读片段（手术刀模式）。**严禁**直接全读文件。 |
+| **2. 已知文件需查逻辑** | **Glob + Read File** | 仅在明确文件路径且 Grep 无法满足时，才允许全文件读取。 |
+| **3. 确认 API 签名/文档** | 调用 **Context7** | 官方文档准确度 > 外部搜索。用于消除语法不确定性。 |
+| **4. 解决顽固报错/寻库** | 调用 **Exa (Code/Web)** | 本地无解时，寻求外部智库和最佳实践。 |
 
-1.  **场景：我知道具体的标识符 / 函数名 / 错误码**
-    * **Action**: 调用 **Grep Tool (ripgrep)**。
-    * **Constraint**: 必须使用 `-C` (Context) 参数读取片段。
-    * **Ban**: **严禁**直接读取全文件 (Full Read)，除非 Grep 结果显示必须深入。
-    * *Why*: 也就是“手术刀”模式，精准且节省 Token。
-
-2.  **场景：我知道文件名，但需要查看逻辑**
-    * **Action**: 调用 **File Search (Glob)** 定位 -> 配合 **Read File**。
-    * *Why*: 只有在明确知道目标文件位置时才全读。
-
-3.  **场景：我不确定具体写法，需要确认 API 签名 / 版本差异**
-    * **Action**: 调用 **Context7** (Doc Search)。
-    * *Why*: 官方文档准确度 > 外部搜索。
-
-4.  **场景：我需要外部方案 / 最佳实践 / 解决顽固报错**
-    * **Action**: 调用 **Exa Code/Web**。
-    * *Why*: 本地无解时，寻求外部智库。
-
-**系统禁令 (System Bash Ban)**：
-严禁在 Bash 中使用原始的 `grep`, `find`, `cat` 进行代码搜索。必须调用封装好的 MCP 工具，以获取结构化数据并避免 Output Truncated。
-
-## 5. 降噪规划 (Low-Entropy Planning)
+## 4. 降噪规划 (Low-Entropy Planning)
 
 **触发 (Trigger)**：涉及多文件修改 (>3) OR 逻辑链路复杂的重构 OR 核心算法/架构变更。
 
 **单一锚点原则 (Single Anchor)**：
-1.  **Init**: 在项目目录下创建 **唯一** 临时文件 `_PLAN.md`。
-    * *内容*: 包含 **Context** (关键调研结论) 和 **Checklist** (执行步骤 `[ ]`)。
-2.  **Execute**: 每完成一步，必须修改 `_PLAN.md` 将 `[ ]` 标记为 `[x]`。
-    * *Why*: 强制模型在多轮对话中“回头看”，防止上下文丢失。
-3.  **Audit (留存验收)**: 任务完成后，**保留** `_PLAN.md` 供用户审查，禁止自动删除。
-**禁止**: 严禁创建分散的 findings/progress 等多余文件。
+1.  **Init**: 在项目目录下创建 **唯一** 临时文件 `_PLAN.md`（包含 Context 结论与 Checklist `[ ]`）。
+2.  **Execute & Halt (步进执行与阻塞等待)**:
+    * 每次严格只从 Checklist 中挑选 **1 个**最小粒度的任务执行。
+    * 完成该原子步骤并将其在 `_PLAN.md` 中标记为 `[x]` 后，**必须立即停止（Halt）所有代码生成**。
+    * **强制等待 (Mandatory Wait)**：向用户汇报当前变更，并显式输出：“请审查当前变更。确认无误后请回复继续”。
+    * 未经用户明确文本授权（如“继续”），**绝对禁止**进入下一个 `[ ]` 的执行。
+3.  **Audit (留存验收)**: 任务完成后，**保留** `_PLAN.md` 供审查，禁止自动删除。严禁创建 findings/progress 等多余文件。
 
-## 6. 验证闭环 (Verification Loop)
+## 5. 验证闭环 (Verification Loop)
 
 **触发 (Trigger)**：每次完成代码编辑 (Post-Edit) 后，**必须**立即执行静态检查。
 
-**环境感知决策 (Context-Aware Action)**：
-* **IF (In IDE Environment)**:
-    * **Action**: 调用 `ide - getDiagnostics`。
-* **ELSE (Non-IDE / CLI Environment)**:
-    * **Action**: 调用 `cclsp - get_diagnostics`。
+**执行机制**：
+* 依环境调用 `ide - getDiagnostics` 或 `cclsp - get_diagnostics`。
+* **Zero-Error Policy**: 若检测到 Error，必须在当前回复中尝试修复，严禁交付带错代码。
+* **逃生通道 (Escape Hatch)**：若连续尝试修复 **3 次**仍未解决同一 Error，必须**强制中断尝试**，向用户汇报当前报错详情并请求人工介入判定方向。
 
-**约束 (Constraint)**：
-* **Zero-Error Policy**: 若检测到 Error，必须在当前回复中尝试修复，**严禁**带着已知的编译错误/Linter 报错交付代码。
-* **Atomic**: 编辑与验证视为原子操作，不可分割。
-
-## 7. 沉淀与闭环 (Consolidation)
+## 6. 沉淀与闭环 (Consolidation)
 
 **触发 (Trigger)**：任务结束 (Task Completion) / 发现并解决深坑 (Pitfall Solved)。
 
@@ -97,19 +73,19 @@
     "observations": [
       "Problem: [一句话描述痛点/需求]",
       "Solution: [技术决策/修复方案]",
-      "Rule: [第一性原理/最佳实践总结]",
+      "Rule: [第一性原理/最佳实践总结 (需抽象为通用原则)]",
       "Context: [涉及的关键文件路径]"
     ]
   }]
 }
 ```
-* **约束**: `Rule` 字段必须抽象为通用原则，而非特定代码细节（例如：“使用智能指针管理生命周期” vs “把 int* 改为 unique_ptr”）。
 
-## 8. 交付门禁 (Gatekeeper)
-在此检查通过前，**禁止输出最终回复**。不需要输出选项，在思考中处理：
+## 7. 交付门禁 (Gatekeeper)
+在此检查通过前，**禁止输出最终回复**。必须在思考过程 (CoT) 中显式校验并确认以下清单：
 
 - [ ] **Memory Check**：是否开局读取了 Memory？
-- [ ] **Search Check**：是否遵守了 Grep (ripgrep) 优先契约？
+- [ ] **Search Check**：是否遵守了 Grep 优先及严禁裸 Bash 搜索的契约？
 - [ ] **Plan Check**：复杂任务是否创建了 `_PLAN.md`？
-- [ ] **Verify Check**：是否执行了 Diagnostics 检查 (IDE/cclsp)？
+- [ ] **Halt Check**：多步任务当前是否只执行了**单个步骤**，并已准备好**停止输出等待用户审查**？（若越界多文件，立即回退）。
+- [ ] **Verify Check**：是否执行了 Diagnostics 检查且处理了可能的报错死循环？
 - [ ] **Graph Check**：是否已将新知写入 Memory？
