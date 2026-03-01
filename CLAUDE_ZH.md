@@ -24,13 +24,15 @@
 
 ## 3. 信息获取流 (Information Pipeline)
 
-**系统禁令**：严禁在 Bash 中使用原始的 `grep`, `find`, `cat` 进行代码搜索。必须调用 MCP 工具获取结构化数据。
+**系统禁令**：
+1. 严禁在 Bash 中使用原始的 `grep`, `find`, `cat` 进行代码搜索。必须调用 MCP 工具获取结构化数据。
+2. **唯一事实来源 (Single Source of Truth)**：严禁在项目目录中直接创建、读取或更新 `memory.md`, `context.md` 等本地记忆文件。背景知识与会话沉淀的读写必须 100% 通过 MCP 相关的 Memory 工具。
 
 执行任何信息获取前，必须严格匹配以下场景路由：
 
 | 场景决策 (Scenario) | 动作选用 (Action) | 约束与目的 (Constraint & Why) |
 | :--- | :--- | :--- |
-| **0. 开局/复盘** | 调用 **Memory** | Session Start 读背景；Session End 写核心决策。 |
+| **0. 开局/复盘** | 调用 **Memory MCP** | Session Start 读背景；Session End 写核心决策。**绝对禁止本地写盘。** |
 | **1. 已知标识符/函数名** | 调用 **Grep (ripgrep)** | 必须使用 `-C` 参数读片段（手术刀模式）。**严禁**直接全读文件。 |
 | **2. 已知文件需查逻辑** | **Glob + Read File** | 仅在明确文件路径且 Grep 无法满足时，才允许全文件读取。 |
 | **3. 确认 API 签名/文档** | 调用 **Context7** | 官方文档准确度 > 外部搜索。用于消除语法不确定性。 |
@@ -62,7 +64,7 @@
 
 **触发 (Trigger)**：任务结束 (Task Completion) / 发现并解决深坑 (Pitfall Solved)。
 
-**Action**: 调用 `create_entities` 将隐性知识显性化。
+**Action**: 调用 `create_entities` 将隐性知识显性化。**同样受限于系统禁令，严禁写本地 Markdown 文件记录。**
 
 **数据结构 (JSON Schema)**：
 ```json
@@ -83,9 +85,9 @@
 ## 7. 交付门禁 (Gatekeeper)
 在此检查通过前，**禁止输出最终回复**。必须在思考过程 (CoT) 中显式校验并确认以下清单：
 
-- [ ] **Memory Check**：是否开局读取了 Memory？
+- [ ] **Memory Check**：是否通过 MCP 工具开局读取了 Memory？（**硬隔离**：是否试图在本地创建 `memory.md` 等平替文件？若是，立即抹除本地变更并重定向至 MCP 工具）。
 - [ ] **Search Check**：是否遵守了 Grep 优先及严禁裸 Bash 搜索的契约？
 - [ ] **Plan Check**：复杂任务是否创建了 `_PLAN.md`？
 - [ ] **Halt Check**：多步任务当前是否只执行了**单个步骤**，并已准备好**停止输出等待用户审查**？（若越界多文件，立即回退）。
 - [ ] **Verify Check**：是否执行了 Diagnostics 检查且处理了可能的报错死循环？
-- [ ] **Graph Check**：是否已将新知写入 Memory？
+- [ ] **Graph Check**：是否已将新知通过 `create_entities` 等接口写入 Memory 且没有污染本地工作区？
