@@ -104,5 +104,5 @@ Before these checks pass, **final output is forbidden**. The following checklist
 - [ ] **Plan Check**: If and only if the user explicitly requested planning mode, was `_PLAN.md` created and handled strictly under its rules?
 - [ ] **Halt Check**: If currently in planning mode, was only **one** step executed, with output ready to stop for user review?
 - [ ] **Verify Check**: Were Diagnostics checks run, and was any potential error-fix loop handled?
-- [ ] **Graph Check**: Was what should be consolidated written into Memory, and what should not be consolidated left unrecorded?
+- [ ] **Graph Check**: Has what should be consolidated been written into Memory, and has what should not be consolidated remained unrecorded?
 - [ ] **Honesty Check**: Was there any case where a tool was unavailable but the output still implied it had been executed? If so, it must be explicitly corrected before the final response.
