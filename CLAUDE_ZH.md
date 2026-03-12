@@ -64,7 +64,7 @@
 
 ## 6. 沉淀与闭环 (Consolidation)
 
-**触发 (Trigger)**：仅当本次工作产出**可复用、非琐碎、会影响后续判断**的经验、约束、模式或坑点时，才写入 Memory。
+触发 (Trigger)：任务结束 (Task Completion) / 发现并解决深坑 (Pitfall Solved)。
 
 **Action**：调用 `create_entities` 沉淀稳定知识；若结论仅属一次性过程信息或低价值记录，则不写入。
 
