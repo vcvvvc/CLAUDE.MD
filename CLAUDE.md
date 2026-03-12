@@ -14,9 +14,9 @@
 - **Anti-Entropy / YAGNI**: Every change should make the system **simpler, clearer, and more verifiable**. Unnecessary abstractions, extra layers, state forks, configuration branches, and “might be useful later” code are strictly forbidden. If extra complexity is unavoidable, it must provide a clear and presently valid benefit.
 - **Maintainability**: Keep logic intuitive, boundaries clear, and dependencies minimal. Readability > clever tricks.
 - **Delivery Cadence**:
-  - **Atomic Logic Change**: Each delivery must be a **minimal unit that is logically complete and independently reviewable** (for example, 1 core function / 1 data structure / 1 isolated defect fix). Forced splitting is forbidden; it is acceptable to generate a complete file in one pass when that is the natural shape of a single atomic task, but the change must not expand beyond the current target.
-  - **Single Change Unit**: Each execution may advance only **1** independently reviewable logical change unit. If a change simultaneously touches multiple independent behaviors or rules, it must be split. The standard is the review target, not the number of files.
-  - **No Lookahead**: Do not write or output code for the next step while working on the current step.
+    - **Atomic Logic Change**: Each delivery must be a **logically complete minimum unit** (e.g., 1 core function / 1 data structure). Forced splitting is prohibited, and generating large files all at once is also prohibited.
+    - **Cross-file Ban**: Modifying more than **1** file in a single response is strictly prohibited. Tasks involving multiple files must be split into multiple conversations.
+    - **No Lookahead**: Writing or outputting code for the next step in the current step is strictly prohibited.
 - **Defensive Strategy**:
   - **Public API**: Assume hostile input; validate it with checks and error handling.
   - **Internal**: Assume trusted state; use assertions only.
