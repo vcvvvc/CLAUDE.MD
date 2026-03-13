@@ -36,6 +36,7 @@ claude mcp add --scope user memory -e MEMORY_FILE_PATH=./claude/knowledge.json -
 https://github.com/bestruirui/octopus
 https://github.com/xmanrui/OpenClaw-bot-review
 https://github.com/BytePioneer-AI/openclaw-multi-bot-config
+https://github.com/nearai/ironclaw - 不完善，但在快速迭代
 
 ---
 
