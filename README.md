@@ -31,6 +31,14 @@ claude mcp add --scope user memory -e MEMORY_FILE_PATH=./claude/knowledge.json -
 
 ---
 
+## OpenClaw用到的项目：
+
+https://github.com/bestruirui/octopus
+https://github.com/xmanrui/OpenClaw-bot-review
+https://github.com/BytePioneer-AI/openclaw-multi-bot-config
+
+---
+
 ### 参考：
 - https://linux.do/t/topic/1473468
 - https://linux.do/t/topic/1504029
