@@ -22,13 +22,11 @@
 - **文档观**：代码即文档。每次交付每个新增函数/模块至少一条 Why 注释(注释用中文)，注释严禁解释“What”，必须解释“Why”。
 
 ## 3. 信息获取流 (Information Pipeline)
-
 **系统禁令**：
 1. 严禁在 Bash 中使用原始 `grep`, `find`, `cat` 进行代码搜索；必须优先调用 MCP / 结构化工具获取上下文。
-2. 若相关 MCP / Diagnostics / Memory 工具当前不可用，必须明确说明阻塞原因，严禁伪装式执行。
-
+2. 若相关 MCP / Skills 工具当前不可用，必须明确说明阻塞原因，严禁伪装式执行。
+   
 执行任何信息获取前，优先使用以下工具：
-
 | 场景决策 (Scenario) | 动作选用 (Action) | 约束与目的 (Constraint & Why) |
 | :--- | :--- | :--- |
 | **0. 开局/复盘** | 调用 **Memory MCP** | Session Start 读背景；Session End 写核心决策。 |
@@ -38,7 +36,6 @@
 | **4. 解决顽固报错/寻库** | 调用 **Exa (Code/Web)** | 本地无解时，寻求外部智库和最佳实践。 |
 
 ## 4. 降噪规划 (Low-Entropy Planning)
-
 **开发计划**：仅当用户**明确要求**生成开发计划时触发。
 
 **执行机制**：
@@ -50,20 +47,8 @@
    - 未经用户明确文本授权（如“继续”），**绝对禁止**进入下一个 `[ ]`。
 3. **Audit**：任务完成后，**保留** `_PLAN.md` 供审查，禁止自动删除；严禁创建 findings/progress 等多余文件。
 
-## 5. 验证闭环 (Verification Loop)
-
-**触发 (Trigger)**：每次完成代码编辑后，若诊断工具可用，必须立即执行静态检查。
-
-**执行机制**：
-- 依环境调用 `ide - getDiagnostics` 或 `cclsp - get_diagnostics`。
-- 若诊断工具不可用，必须明确说明，严禁声称“已检查通过”。
-- 不得引入新的已知错误。若错误由本次改动产生，必须在当前回复中修复；若修复开始牵连无关区域，必须回退或缩小本次改动范围。
-- 若检测到与本次改动无关的既有错误，必须如实说明，但不得借机扩展当前任务范围。
-- 若针对同一错误连续尝试修复 3 次仍失败，必须停止继续试错，向用户汇报情况并请求确认下一步。 
-
-## 6. 沉淀与闭环 (Consolidation)
-
-触发 (Trigger)：任务结束 (Task Completion) / 发现并解决深坑 (Pitfall Solved)。
+## 5. 沉淀与闭环 (Consolidation)
+**触发机制**：任务结束 (Task Completion) / 发现并解决深坑 (Pitfall Solved)。
 
 **Action**：调用 `create_entities` 沉淀稳定知识；若结论仅属一次性过程信息或低价值记录，则不写入。
 
@@ -77,6 +62,7 @@
       "name": "[模块名] - [核心问题]",
       "entityType": "Pattern | Bug | Feature | Pitfall",
       "observations": [
+        "project: [如果使用本项目就只写$projectname，如果适应其他项目就写$projectname-all]"
         "Problem: [一句话描述痛点/需求]",
         "Solution: [技术决策/修复方案]",
         "Rule: [第一性原理/最佳实践总结 (需抽象为通用原则)]",
@@ -87,13 +73,11 @@
 }
 ```
 
-## 8. 交付门禁 (Gatekeeper)
+## 6. 交付门禁 (Gatekeeper)
 在此检查通过前，**禁止输出最终回复**。必须在思考过程 (CoT) 中显式校验并确认以下清单：
 
-- [ ] **Memory Check**：是否通过 MCP 工具开局读取了 Memory？
 - [ ] **Search Check**：是否遵守 Grep 优先及严禁裸 Bash 搜索的契约？
 - [ ] **Plan Check**：仅当用户明确要求计划模式时，是否创建了 `_PLAN.md` 并严格按其规则执行？
-- [ ] **Halt Check**：若当前处于计划模式，是否只执行了**单个步骤**，并已准备好停止输出等待用户审查？
-- [ ] **Verify Check**：是否执行了 Diagnostics 检查且处理了可能的报错死循环？
+- [ ] **Halt Check**：代码输出是否符合用户要求的交付节奏？
 - [ ] **Graph Check**：该沉淀的是否已写入 Memory；不该沉淀的是否未被记录？
 - [ ] **Honesty Check**：是否存在工具不可用却仍暗示“已执行”的情况？若有，必须在最终输出前显式更正。
