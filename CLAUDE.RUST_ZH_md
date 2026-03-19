@@ -53,7 +53,7 @@
 **触发机制**：每次完成代码编辑后，使用审查命令进行检测。
 
 **执行机制**：
-- 审查命令： ** cargo fmt && cargo check && cargo clippy**。
+- 审查命令： **cargo fmt && cargo check && cargo clippy && cargo test**。
 - 若检查工具不可用，必须明确说明，严禁声称“已检查通过”。
 - 若检测到与本次改动无关的既有错误，必须如实说明，但不得借机扩展当前任务范围。
 
