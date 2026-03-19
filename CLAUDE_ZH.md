@@ -58,10 +58,9 @@
 {
   "entities": [
     {
-      "name": "[模块名] - [核心问题]",
+      "name": "[项目名] - [模块名] - [核心问题]",
       "entityType": "Pattern | Bug | Feature | Pitfall",
       "observations": [
-        "project: [如果使用本项目就只写$projectname，如果适应其他项目就写$projectname-all]"
         "Problem: [一句话描述痛点/需求]",
         "Solution: [技术决策/修复方案]",
         "Rule: [第一性原理/最佳实践总结 (需抽象为通用原则)]",
