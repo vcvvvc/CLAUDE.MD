@@ -23,8 +23,7 @@
 
 ## 3. 信息获取流 (Information Pipeline)
 **系统禁令**：
-1. 严禁在 Bash 中使用原始 `grep`, `find`, `cat` 进行代码搜索；必须优先调用 MCP / 结构化工具获取上下文。
-2. 若相关 MCP / Skills 工具当前不可用，必须明确说明阻塞原因，严禁伪装式执行。
+若相关 MCP / Skills 工具当前不可用，必须明确说明阻塞原因，严禁伪装式执行。
    
 执行任何信息获取前，优先使用以下工具：
 | 场景决策 (Scenario) | 动作选用 (Action) | 约束与目的 (Constraint & Why) |
