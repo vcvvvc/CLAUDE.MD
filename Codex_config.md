@@ -1,3 +1,12 @@
+
+  - approval_policy = "untrusted" 在顶层（/root/.codex/config.toml:9）
+  - sandbox_mode = "workspace-write" 在顶层（/root/.codex/config.toml:10）
+  - network_access = "enabled" 保留（/root/.codex/config.toml:5）
+  - [sandbox_workspace_write].network_access = true 保留（/root/.codex/config.toml:37）
+
+
+---
+
 ### 1. Exa（URL 方式）
 ```bash
 codex mcp add exa --url https://mcp.exa.ai/mcp
