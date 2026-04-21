@@ -31,6 +31,12 @@ claude mcp add --scope user memory -e MEMORY_FILE_PATH=./claude/knowledge.json -
 
 ---
 
+codex cli: 
+将提示词写入 ~/.codex/instruction.md
+在 ~/.codex/config.toml 添加一行 model_instructions_file = "./instruction.md"
+
+---
+
 ## OpenClaw用到的项目：
 
 https://github.com/bestruirui/octopus
