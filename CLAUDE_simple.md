@@ -17,7 +17,7 @@
 - **Defensive Strategy**:
   - **Public API**: Treat inputs as untrusted. Validate them and handle errors.
   - **Internal Code**: Treat state as trusted. Use assertions only.
-- **Documentation Philosophy**: Code is documentation. For every delivery, each newly added function or module must include at least one Why comment. Comments must be written in Chinese. Comments must not explain “what”; they must explain “why”.
+- **Documentation Philosophy**: Code is documentation. For every delivery, each newly added function or module must include at least one Chinese comment that briefly states the “What” and clearly explains the “Why”. The comment must not over-explain the “What”; its main purpose is to explain the “Why”.
 
 ## 3. Low-Entropy Planning
 **Development Plan**: Trigger this only when the user explicitly requests a development plan.
