@@ -20,7 +20,7 @@
 - **Defensive Strategy**:
   - **Public API**: Assume inputs are untrusted; validation (check + error handling) is mandatory.
   - **Internal**: Assume state is trusted; use assertions only.
-- **Documentation Stance**: Code is documentation. Comments should explain **Why**, not the obvious **What**. Prefer Why-comments at key decisions, boundary handling, and compatibility tradeoffs.
+- **Documentation Philosophy**: Code is documentation. For every delivery, each newly added function or module must include at least one Chinese comment that briefly states the “What” and clearly explains the “Why”. The comment must not over-explain the “What”; its main purpose is to explain the “Why”.
 
 ## 3. Information Pipeline
 
