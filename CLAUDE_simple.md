@@ -23,18 +23,18 @@
 ## 4. Tool Rules
 1. **Core Constraint**: Tool calls are for narrowing the information surface; aimless browsing, full-content dumps, and large one-shot outputs are prohibited.
 2. **File Targeting**: For code and document exploration, start with `rg --files` to locate candidate files; narrow by file name, path, extension, or directory scope to a specific file or a small candidate set.
-3. **Scale Check**: After locating a specific file or a small candidate set, use `wc -l` to check line count; `wc` is only for scale assessment and does not replace content targeting or content reading.
+3. **Scale Check**: After locating a specific file or a small candidate set, use `wc -l` to check line count; files with `50` lines or fewer may be safely read in full, while files over `50` lines must proceed to snippet targeting. `wc` is only for scale assessment and does not replace content targeting.
 4. **Snippet Targeting**: Inside located files, use `rg -n -C <N>` to read the minimum necessary snippet by symbol, heading, config key, error message, or keyword; default `N` is `10`, maximum `N` is `200`.
 5. **Context Expansion**: If context is insufficient, first change keywords, narrow paths, or target by segment; only then increase `N`. Do not start reading large blocks from line 1.
 6. **Document Strategy**: Before reading Markdown or explanatory documents, use `rg` to locate headings, tables of contents, or keywords; read only relevant sections, and do not try to read the whole document from the beginning.
-7. **Change Boundaries**: Prefer `git status` before making changes and `git diff` after making changes to confirm user changes were not overwritten and unrelated changes were not introduced.
+7. **Change Boundaries**: In Git repositories, check `git status` before making changes; if uncommitted changes overlap with the current scope or their ownership is unclear, halt and ask the user; if they are unrelated, avoid them and do not overwrite them. Check `git diff` after making changes to confirm no unrelated changes were introduced; if Git is unavailable, state the reason.
 8. **Structured JSON**: When processing JSON, prefer `jq` to read target fields; if `jq` is unavailable, fall back to `rg` snippet targeting, and do not expand the full file.
-9. **Prohibitions and Exceptions**: Do not use `cat` to read code or documents; do not use standard `grep`, shell globs, or full-file Read for scanning-style exploration; do not use `find` for routine file exploration, except for metadata investigation, which must be scope-limited.
+9. **Prohibitions and Exceptions**: Do not use `cat` to read code or documents; do not use standard `grep`, shell globs, or full-file Read for scanning-style exploration; do not use `find` for routine file exploration, except for metadata investigation, which must be scope-limited. Safe full reads are allowed only after targeting a file and confirming it has `50` lines or fewer.
 
 ## 5. Development Plan
 - **Trigger Condition**: Trigger only when the user explicitly requests a "development plan".
 - **Init**: Create exactly one file named `_PLAN.md` in the project directory, containing Context conclusions and a Checklist `[ ]`.
-- **Execute & Halt**: Execute only one smallest task from the Checklist each time; after completion, mark it as `[x]`, immediately stop all code generation, and output: "请审查当前变更。确认无误后请回复继续".
+- **Execute & Halt**: Execute only one smallest task from the Checklist each time; after completion, mark it as `[x]`, immediately stop all code generation, and output strictly according to the interaction principles: `[VW。]`, then a line break, then `请审查当前变更。确认无误后请回复继续`.
 - **Authorization to Continue**: Without explicit textual authorization from the user, such as "继续" or "continue", do not proceed to the next `[ ]`.
 - **Audit**: Keep `_PLAN.md` after the task is complete; do not delete it automatically, and do not create extra progress files such as `findings` or `progress`.
 
