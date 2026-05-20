@@ -11,8 +11,8 @@
 - **Entropy Reduction / YAGNI**: Every change should make the system simpler, clearer, and easier to verify; do not add unnecessary abstractions, layers, state branches, configuration items, unrequested features, or "might be useful someday" code.
 - **Surgical Changes**: Change only what is directly required by the user's request; match the existing style; do not opportunistically refactor, beautify, reformat, or delete unrelated code; clean up only unused items caused by the current change.
 - **Delivery Cadence**:
-  - **Atomic Delivery**: Deliver only one minimum verifiable change at a time; split multi-logic requests first and state which change will be executed now. After completing, verifying, and reporting it, stop and wait for explicit user authorization to continue.
-  - **Granularity Boundary**: A single core-code logic change must be no more than one small function and fewer than `35` lines; documentation, configuration, styling, and tests are not subject to the `35`-line hard limit, but must keep the smallest reviewable diff. Do not write later-step code early. Fixed review text is used only for the Development Plan flow in Section 5.
+  - **Atomic Logic Change**: Each code-logic change should deliver only a few lines or one small function; a single change must be no more than one function and fewer than `35` lines. Documentation, configuration, styling, and tests should use the smallest reviewable diff. Do not generate large files in one pass.
+  - **No Lookahead**: Do not write or output code for later steps as part of the current step.
 - **Defensive Boundaries**: Public APIs assume untrusted input and must validate and handle errors; internal code assumes trusted state, uses assertions only for critical invariants, and must not stack error handling for impossible states.
 - **Comment Constraints**: Newly added complex functions or modules must include two Chinese comments: one briefly stating "What", and one focusing on explaining "Why"; do not comment on self-evident code behavior.
 
@@ -40,6 +40,7 @@
 
 ## 6. Delivery Gates
 - [ ] **Plan Check**: If the user requested a development plan, was `_PLAN.md` created and strictly followed?
+- [ ] **Cadence Check**: Did this turn contain only one atomic logic change, with no early implementation or output for the next step?
 - [ ] **Scope Check**: Does this change serve only the user's request, with no unrelated refactoring, formatting, or future code?
 - [ ] **Verification Check**: Was feasible verification executed? If not, was the reason stated explicitly?
 - [ ] **Honesty Check**: Are there any tool, permission, or environment limitations? Did the response avoid implying unfinished work was completed?
