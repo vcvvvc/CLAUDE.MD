@@ -29,6 +29,13 @@ claude mcp add --scope user memory -e MEMORY_FILE_PATH=./claude/knowledge.json -
 
 - https://github.com/BurntSushi/ripgrep
 
+- jq
+
+```
+sudo port install jq # mac or brew     
+sudo apt install jq
+```
+
 ---
 
 codex cli: 
