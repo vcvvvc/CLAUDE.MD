@@ -4,8 +4,8 @@
 
 ## INIT (Agent持久化记忆系统 https://github.com/0120012/mem012)
 初始化触发条件：仅限首次对话，或上下文压缩后的首次对话。其余情况切勿重复执行。
-我的profile: maccodex.
-mem012 是我的记忆系统。启动后，我必须先执行 shell 命令 `mem012 --profile maccodex init`，完整读取返回内容，完成初始化后再继续处理用户请求。
+我的profile: claude.
+mem012 是我的记忆系统。启动后，我必须先执行 shell 命令 `mem012 --profile claude init`，完整读取返回内容，完成初始化后再继续处理用户请求。
 </自用部分>
 
 ## 0. 优先级与失效
